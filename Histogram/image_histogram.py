@@ -43,7 +43,7 @@ parser.add_argument('-o','--output',help="out put filename")
 args = parser.parse_args()
 filename = args.INPUT
 
-
+#try git
 lena = mpimg.imread(filename)
 y_r,y_g,y_b,y_gy = get_number(lena)
 x = np.arange(256)
