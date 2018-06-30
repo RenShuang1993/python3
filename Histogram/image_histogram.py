@@ -35,31 +35,34 @@ def get_number(color):
 		histo_b[i]=((histo_b[i])/(max_b))*100
 		histo_gy[i]=((histo_gy[i])/(max_gy))*100
 	return histo_r,histo_g,histo_b,histo_gy
-
-# comand line
-parser = argparse.ArgumentParser()
-parser.add_argument('INPUT',help="input file name")
-parser.add_argument('-o','--output',help="out put filename")
-args = parser.parse_args()
-filename = args.INPUT
-
-#try git
-lena = mpimg.imread(filename)
-y_r,y_g,y_b,y_gy = get_number(lena)
-x = np.arange(256)
-if args.output:
-	dataframe = pd.DataFrame({'#red':y_r,'#green':y_g,'#blue':y_b,'#gray':y_gy,'Value':x})
-	columns=['Value','#red','#green','#blue','#gray']
-	dataframe.to_csv(args.output,index=True,sep=';',columns=columns,encoding="utf_8_sig")
-else:
-	fig,(ax_r,ax_g,ax_b,ax_gy)= plt.subplots(4,sharex=True)
-	ax_r.bar(x,y_r,color="red")
-	ax_g.bar(x,y_g,color="green")
-	ax_b.bar(x,y_b,color="blue")
-	ax_gy.bar(x,y_gy,color="gray")
-	fig.canvas.set_window_title("Histogram of "+filename)
-	plt.show()
-	 
+def main():
+    # comand line
+    parser = argparse.ArgumentParser()
+    parser.add_argument('INPUT',help="input file name")
+    parser.add_argument('-o','--output',help="out put filename")
+    args = parser.parse_args()
+    filename = args.INPUT
+    try:
+        lena = mpimg.imread(filename)
+    except:
+        print("please input correct filename！！！")
+    y_r,y_g,y_b,y_gy = get_number(lena)
+    x = np.arange(256)
+    if args.output:
+        dataframe = pd.DataFrame({'#red':y_r,'#green':y_g,'#blue':y_b,'#gray':y_gy,'Value':x})
+        columns=['Value','#red','#green','#blue','#gray']
+        dataframe.to_csv(args.output,index=True,sep=';',columns=columns,encoding="utf_8_sig")
+    else:
+        fig,(ax_r,ax_g,ax_b,ax_gy)= plt.subplots(4,sharex=True)
+        ax_r.bar(x,y_r,color="red")
+        ax_g.bar(x,y_g,color="green")
+        ax_b.bar(x,y_b,color="blue")
+        ax_gy.bar(x,y_gy,color="gray")
+        fig.canvas.set_window_title("Histogram of "+filename)
+        plt.show()
+        
+if __name__=='__main__':
+    main()
 
 
 
